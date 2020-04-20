@@ -6,7 +6,8 @@ const defaultMoodbarMessage = "Hi newcomers! We wanted to check in on everyone -
 
 function run() {
     const client = new github.GitHub(core.getInput('repo-token', { required: true }));
-    const moodbarMessage = core.getInput('moodbar-message') || defaultMoodbarMessage;
+    let moodbarMessage = core.getInput('moodbar-message');
+    console.log(moodbarMessage);
 
     const context = github.context;    
     const newIssue = client.issues.create({
