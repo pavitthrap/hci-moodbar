@@ -7,6 +7,8 @@ const defaultMoodbarMessage = "Hi newcomers! We wanted to check in on everyone -
 function run() {
     const client = new github.GitHub(core.getInput('repo-token', { required: true }));
     let moodbarMessage = core.getInput('moodbar-message');
+    var d = new Date();
+    console.log("date: ", d);
     console.log(moodbarMessage);
 
     const context = github.context;    
