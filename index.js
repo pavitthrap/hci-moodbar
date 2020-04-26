@@ -57,11 +57,12 @@ function run() {
             console.log('Open Issues: ' + prJson.length);
 
         }).catch(function(err) {
-            console.log(err);
+            console.log("Error:", err);
         });
     
 
     console.log("NOW: Quering for issues."); 
+    var userIssues = github.getIssues('pavitthrap', repoName);
     userIssues.listIssues({state: 'open'})
         .then(function({data: issuesJson}) {
             console.log('Open Issues: ' + issuesJson.length);
