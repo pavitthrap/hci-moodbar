@@ -12,7 +12,9 @@ function run() {
     const mentors  = core.getInput('mentor-list');
     const repoName = core.getInput('repo-name');
 
+    // OPTIONALLY: strip whitespace? 
     var mentorArr = mentors.split(',');
+
     console.log("mentors: ", mentorArr);
     console.log("first mentor: ", mentorArr[0]); 
     
@@ -59,6 +61,14 @@ function run() {
         });
     
 
+    console.log("NOW: Quering for issues."); 
+    userIssues.listIssues({state: 'open'})
+        .then(function({data: issuesJson}) {
+            console.log('Open Issues: ' + issuesJson.length);
+
+        }).catch(function(err) {
+            console.log(err);
+        });
     // get all new users of the past month 
     var newUsers = [];
     var nonNewUsers = []; 
