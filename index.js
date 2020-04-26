@@ -18,13 +18,14 @@ function run() {
     
     if (mentors) {
         var mentorString = ""; 
-        for (var i=0; i < length(mentorArr); i++) {
+        for (var i=0; i < mentorArr.length; i++) {
             if (i != 0) {
                 mentorString += ", "; 
             }
             mentorString += "@";
             mentorString += mentorArr[i];
         }
+        console.log("mentor string: ", mentorString); 
         defaultMoodbarMessage = defaultMoodbarMessage + " Here are the mentors that will be able to answer any questions: " + mentorString; 
     }
 
