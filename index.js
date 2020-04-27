@@ -65,9 +65,9 @@ function run() {
     // created_at, creator.login
     // https://developer.github.com/v3/pulls/#get-a-single-pull-request
 
-    userRepo.listPullRequests(199)
-        .then(function({data: prJson}) {
-            console.log('json value: ' + prJson);
+    userRepo.getPullRequest(199)
+        .then(function({data}) {
+            console.log('json value: ', data);
         }).catch(function(err) {
             console.log("Error:", err);
         });
