@@ -52,24 +52,26 @@ function run() {
     console.log('username: ' + user.__user);
     console.log('repo fullname: ' + userRepo.__fullname);
 
+    // make it sorted in descending order - get the first number of the PR
     userRepo.listPullRequests({state: 'open'})
         .then(function({data: prJson}) {
             console.log('Open Issues: ' + prJson.length);
-
         }).catch(function(err) {
             console.log("Error:", err);
         });
     
 
-    console.log("NOW: Quering for issues."); 
-    var userIssues = github.getIssues('pavitthrap', repoName);
-    userIssues.listIssues({state: 'open'})
-        .then(function({data: issuesJson}) {
-            console.log('Open Issues: ' + issuesJson.length);
+    // get individual PRs, and keep going until created date exceeds 1 month 
+    // created_at, creator.login
+    // https://developer.github.com/v3/pulls/#get-a-single-pull-request
 
+    userRepo.listPullRequests({number: 199})
+        .then(function({data: prJson}) {
+            console.log('json value: ' + prJson);
         }).catch(function(err) {
-            console.log(err);
+            console.log("Error:", err);
         });
+
     // get all new users of the past month 
     var newUsers = [];
     var nonNewUsers = []; 
