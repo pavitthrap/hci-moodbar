@@ -159,37 +159,16 @@ function run() {
             console.log('userRepo: ' + userRepo);
             console.log('username: ' + user.__user);
             console.log('repo fullname: ' + userRepo.__fullname);
-
-            // make it sorted in descending order - get the first number of the PR
-            // userRepo.listPullRequests({state: 'open'})
-            //     .then(function({data: prJson}) {
-            //         console.log('Open Issues: ' + prJson);
-            //     }).catch(function(err) {
-            //         console.log("Error:", err);
-            //     });
-            // get most recent PR number 
-            //var mostRecentPR = 199; // TODO: obtain real value 
-
-        
             
             // get all new users of the past month 
             var newUsers = new Map();
             var allUsers = yield getAllUsers(client, repoName, newUsers);
-            console.log("all users:", allUsers, allUsers.size);
+            console.log("all users:", allUsers, allUsers.size, "  , newUsers is now: ", newUsers);
 
+            allUsers.set('pavitthrap', 2);
 
-            var newUsers = isFirstPull(client, "pavitthrap", repoName, allUsers); 
+            var newUsers = yield isFirstPull(client, "pavitthrap", repoName, allUsers); 
             console.log("new users:", newUsers);
-            // get individual PRs, and keep going until created date exceeds 1 month 
-            // created_at, creator.login
-            // https://developer.github.com/v3/pulls/#get-a-single-pull-request
-
-            // userRepo.getPullRequest(199)
-            //     .then(function({data}) {
-            //         console.log('json value: ', data);
-            //     }).catch(function(err) {
-            //         console.log("Error:", err);
-            //     });
         } catch(err) {
             console.log(err);
         }
