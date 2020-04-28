@@ -21,7 +21,7 @@ function getAllUsers(client, repo, allUsers, page = 1) {
         console.log('Checking...');
         var { status, data: pulls } = yield client.pulls.list({
             owner: "pavitthrap",
-            repo: repoName,
+            repo: repo,
             per_page: 100,
             page: page,
             state: 'all'
