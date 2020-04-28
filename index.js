@@ -59,22 +59,66 @@ function run() {
     //     }).catch(function(err) {
     //         console.log("Error:", err);
     //     });
+     // get most recent PR number 
+     //var mostRecentPR = 199; // TODO: obtain real value 
+
+   
+     
+     // get all new users of the past month 
+    var newUsers = [];
+    var nonNewUsers = []; 
+
+    var page = 1; 
     
+    while (withinMonth) {
+        const { status, data: pulls } = yield client.pulls.list({
+            owner: "pavitthrap",
+            repo: repoName,
+            per_page: 100,
+            page: page,
+            state: 'all'
+        });
+        if (status !== 200) {
+            throw new Error(`Received unexpected API status code ${status}`);
+        }
+        if (pulls.length === 0) {
+            withinMonth = false; 
+        }
+        for (const pull of pulls) {
+            const user = pull.user.login;
+            console.log("got pull: ", pull)
+            
+            // TODO: add user to list
+
+            // TODO: calculate next withinMonth 
+            withinMonth = false;
+            //  // figure out if the most recent PR is within the month 
+            //  var creationDate = Date.parse("2020-04-10T20:09:31Z"); // TODO: data["created_at"]: 
+            //  var currDate = Date.now(); 
+            //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+            //  var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
+            //  console.log("within month:", withinMonth)
+        }
+
+        withinMonth = false; 
+        
+        
+    }
+
+   
+
 
     // get individual PRs, and keep going until created date exceeds 1 month 
     // created_at, creator.login
     // https://developer.github.com/v3/pulls/#get-a-single-pull-request
 
-    userRepo.getPullRequest(199)
-        .then(function({data}) {
-            console.log('json value: ', data);
-        }).catch(function(err) {
-            console.log("Error:", err);
-        });
+    // userRepo.getPullRequest(199)
+    //     .then(function({data}) {
+    //         console.log('json value: ', data);
+    //     }).catch(function(err) {
+    //         console.log("Error:", err);
+    //     });
 
-    // get all new users of the past month 
-    var newUsers = [];
-    var nonNewUsers = []; 
 
 }
 
