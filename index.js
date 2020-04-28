@@ -126,6 +126,8 @@ function run() {
             if (option) {
                 console.log("hello option here!!")
             }
+            const { data } = await client.request("/user");
+            console.log("data", data); 
 
             // OPTIONALLY: strip whitespace? 
             var mentorArr = mentors.split(',');
@@ -143,7 +145,6 @@ function run() {
                 defaultMoodbarMessage = defaultMoodbarMessage + " Here are the mentors that will be able to answer any questions: " + mentorString; 
             }
 
-           
 
             // get all new users of the past month 
             var newUsers = new Map();
@@ -164,21 +165,17 @@ function run() {
                 val = it.next().value;
                 i+= 1; 
             }
-            console.log("new user string: ", newUserString); 
 
             if (newUserString) {
                 defaultMoodbarMessage = defaultMoodbarMessage + newUserMessage + newUserString; 
-            }
-
-            console.log("final moodbar string: ", defaultMoodbarMessage); 
-            // TODO: make the issue message for real 
-            const context = github.context;    
-            const newIssue = client.issues.create({
+                const context = github.context;    
+                const newIssue = client.issues.create({
                 ...context.repo,
                 title: 'Moodbar for Current Month',
                 body: defaultMoodbarMessage
             });
 
+            }
 
         } catch(err) {
             console.log(err);
