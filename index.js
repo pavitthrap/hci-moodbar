@@ -62,84 +62,82 @@ function getAllUsers(client, repo, allUsers, page = 1) {
 
 
 function run() {
-    var client = new github_old.GitHub(core.getInput('repo-token', { required: true }));
-    let moodbarMessage = core.getInput('moodbar-message');
-    console.log(moodbarMessage);
-    const mentors  = core.getInput('mentor-list');
-    const repoName = core.getInput('repo-name');
+    return __awaiter(this, void 0, void 0, function* () {
+        var client = new github_old.GitHub(core.getInput('repo-token', { required: true }));
+        let moodbarMessage = core.getInput('moodbar-message');
+        console.log(moodbarMessage);
+        const mentors  = core.getInput('mentor-list');
+        const repoName = core.getInput('repo-name');
 
-    // OPTIONALLY: strip whitespace? 
-    var mentorArr = mentors.split(',');
+        // OPTIONALLY: strip whitespace? 
+        var mentorArr = mentors.split(',');
 
-    console.log("mentors: ", mentorArr);
-    console.log("first mentor: ", mentorArr[0]); 
-    
-    if (mentors) {
-        var mentorString = ""; 
-        for (var i=0; i < mentorArr.length; i++) {
-            if (i != 0) {
-                mentorString += ", "; 
+        console.log("mentors: ", mentorArr);
+        console.log("first mentor: ", mentorArr[0]); 
+        
+        if (mentors) {
+            var mentorString = ""; 
+            for (var i=0; i < mentorArr.length; i++) {
+                if (i != 0) {
+                    mentorString += ", "; 
+                }
+                mentorString += "@";
+                mentorString += mentorArr[i];
             }
-            mentorString += "@";
-            mentorString += mentorArr[i];
+            console.log("mentor string: ", mentorString); 
+            defaultMoodbarMessage = defaultMoodbarMessage + " Here are the mentors that will be able to answer any questions: " + mentorString; 
         }
-        console.log("mentor string: ", mentorString); 
-        defaultMoodbarMessage = defaultMoodbarMessage + " Here are the mentors that will be able to answer any questions: " + mentorString; 
-    }
 
-    // TODO: make the issue message for real 
-    // const context = github_old.context;    
-    // const newIssue = client.issues.create({
-    //     ...context.repo,
-    //     title: 'Moodbar for Current Month',
-    //     body: defaultMoodbarMessage
-    // });
+        // TODO: make the issue message for real 
+        // const context = github_old.context;    
+        // const newIssue = client.issues.create({
+        //     ...context.repo,
+        //     title: 'Moodbar for Current Month',
+        //     body: defaultMoodbarMessage
+        // });
 
 
-    // using github api 
-    const userToken  = core.getInput('repo-token');
-    var github = new Github({
-        'token': userToken
-    });
+        // using github api 
+        const userToken  = core.getInput('repo-token');
+        var github = new Github({
+            'token': userToken
+        });
 
-    var user = github.getUser();
-    var userRepo = github.getRepo(user, repoName);
-    console.log('name of repo: ' + repoName);
-    console.log('userRepo: ' + userRepo);
-    console.log('username: ' + user.__user);
-    console.log('repo fullname: ' + userRepo.__fullname);
+        var user = github.getUser();
+        var userRepo = github.getRepo(user, repoName);
+        console.log('name of repo: ' + repoName);
+        console.log('userRepo: ' + userRepo);
+        console.log('username: ' + user.__user);
+        console.log('repo fullname: ' + userRepo.__fullname);
 
-    // make it sorted in descending order - get the first number of the PR
-    // userRepo.listPullRequests({state: 'open'})
-    //     .then(function({data: prJson}) {
-    //         console.log('Open Issues: ' + prJson);
-    //     }).catch(function(err) {
-    //         console.log("Error:", err);
-    //     });
-     // get most recent PR number 
-     //var mostRecentPR = 199; // TODO: obtain real value 
+        // make it sorted in descending order - get the first number of the PR
+        // userRepo.listPullRequests({state: 'open'})
+        //     .then(function({data: prJson}) {
+        //         console.log('Open Issues: ' + prJson);
+        //     }).catch(function(err) {
+        //         console.log("Error:", err);
+        //     });
+        // get most recent PR number 
+        //var mostRecentPR = 199; // TODO: obtain real value 
 
-   
-     
-     // get all new users of the past month 
-    var newUsers = [];
-    var allUsers = yield getAllUsers(client, repoName, newUsers);
     
-   
+        
+        // get all new users of the past month 
+        var newUsers = [];
+        var allUsers = yield getAllUsers(client, repoName, newUsers);
 
+        // get individual PRs, and keep going until created date exceeds 1 month 
+        // created_at, creator.login
+        // https://developer.github.com/v3/pulls/#get-a-single-pull-request
 
-    // get individual PRs, and keep going until created date exceeds 1 month 
-    // created_at, creator.login
-    // https://developer.github.com/v3/pulls/#get-a-single-pull-request
+        // userRepo.getPullRequest(199)
+        //     .then(function({data}) {
+        //         console.log('json value: ', data);
+        //     }).catch(function(err) {
+        //         console.log("Error:", err);
+        //     });
 
-    // userRepo.getPullRequest(199)
-    //     .then(function({data}) {
-    //         console.log('json value: ', data);
-    //     }).catch(function(err) {
-    //         console.log("Error:", err);
-    //     });
-
-
+    });
 }
 
 
