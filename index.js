@@ -100,7 +100,7 @@ function isFirstPull(client, owner, repo, allUsers, page = 1) {
             
             if (allUsers.has(currUser) && pull.number < allUsers.get(currUser)) {
                 // delete currUser from the dict ; return if the dict is empty 
-                console.log("an older pull request was found for user: ", currUser);
+                console.log("an older pull request was found for user:  ", currUser);
                 allUsers.delete(currUser);
                 if (allUsers.size == 0) {
                     return allUsers;
