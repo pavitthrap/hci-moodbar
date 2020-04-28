@@ -126,7 +126,7 @@ function run() {
             if (option) {
                 console.log("hello option here!!")
             }
-            const { data } = await client.request("/user");
+            const { data } = yield client.request("/user");
             console.log("data", data); 
 
             // OPTIONALLY: strip whitespace? 
