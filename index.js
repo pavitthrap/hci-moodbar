@@ -28,11 +28,11 @@ function getAllUsers(client, repo, allUsers, page = 1) {
         });
         if (status !== 200) {
             throw new Error(`Received unexpected API status code ${status}`);
-            withinMonth = false; 
+            var withinMonth = false; 
         }
         if (pulls.length === 0) {
             console.log("no more pull requests.. length was 0")
-            withinMonth = false; 
+            var withinMonth = false; 
         }
         for ( var pull of pulls) {
             // run 18 has the body of the pull 
@@ -50,8 +50,12 @@ function getAllUsers(client, repo, allUsers, page = 1) {
                 var creationDate = new Date(creationTime); // TODO: data["created_at"]: 
                 var currDate = new Date(); 
                 //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-                var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
-                console.log("within month:", withinMonth, " , creation date:", creationDate, ", current: ", currDate);
+                if (creationTime.getYear() != currDate.getYear()) {
+                    var withinMonth = (creationTime.getYear() == currDate.getYear()-1) && currDate.getMonth()==1 && creationDate.getMonth()==12; 
+                } else {
+                    var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
+                }
+                console.log("within month:", withinMonth, " , creation date:", creationDate, ", current month: ", currcurrDate.getMonth());
             } catch (err){
                 console.log(err);
             }
@@ -60,7 +64,7 @@ function getAllUsers(client, repo, allUsers, page = 1) {
             // TODO: add user to set if withinMonth is true 
             allUsers.set(user, prNumber);
         }
-        withinMonth = false;
+        
         if (withinMonth) {
             return yield isFirstPull(client, repo, allUsers, page + 1);
         } else {
