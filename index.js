@@ -37,9 +37,8 @@ function getAllUsers(client, repo, allUsers, page = 1) {
         for ( var pull of pulls) {
             var user = pull.user.login;
             console.log("got pull: ", pull)
-            
             // TODO: add user to set
-            
+            allUsers.add(user);
             // TODO: calculate next withinMonth 
             withinMonth = false;
             //  // figure out if the most recent PR is within the month 
@@ -123,8 +122,9 @@ function run() {
     
         
         // get all new users of the past month 
-        var newUsers = [];
+        var newUsers = Set();
         var allUsers = yield getAllUsers(client, repoName, newUsers);
+        console.log("all users:", allUsers);
 
         // get individual PRs, and keep going until created date exceeds 1 month 
         // created_at, creator.login
