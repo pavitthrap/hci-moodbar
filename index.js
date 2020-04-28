@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
 const core = require("@actions/core");
 const github_old = require("@actions/github");
 var Github = require('github-api');
@@ -67,46 +76,8 @@ function run() {
      
      // get all new users of the past month 
     var newUsers = [];
-    var nonNewUsers = []; 
-
-    var page = 1; 
-    var withinMonth = true; 
-
-    while (withinMonth) {
-        var { status, data: pulls } = client.pulls.list({   //removed yield
-            owner: "pavitthrap",
-            repo: repoName,
-            per_page: 100,
-            page: page,
-            state: 'all'
-        });
-        if (status !== 200) {
-            throw new Error(`Received unexpected API status code ${status}`);
-        }
-        if (pulls.length === 0) {
-            withinMonth = false; 
-        }
-        for ( var pull of pulls) {
-            var user = pull.user.login;
-            console.log("got pull: ", pull)
-            
-            // TODO: add user to list
-
-            // TODO: calculate next withinMonth 
-            withinMonth = false;
-            //  // figure out if the most recent PR is within the month 
-            //  var creationDate = Date.parse("2020-04-10T20:09:31Z"); // TODO: data["created_at"]: 
-            //  var currDate = Date.now(); 
-            //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-            //  var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
-            //  console.log("within month:", withinMonth)
-        }
-
-        withinMonth = false; 
-        
-        
-    }
-
+    var allUsers = yield isFirstPull(client, repoName, newUsers);
+    
    
 
 
@@ -123,5 +94,50 @@ function run() {
 
 
 }
+
+function getAllUsers(client, repo, allUsers, page = 1) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Provide console output if we loop for a while.
+        console.log('Checking...');
+        var { status, data: pulls } = yield client.pulls.list({
+            owner: "pavitthrap",
+            repo: repoName,
+            per_page: 100,
+            page: page,
+            state: 'all'
+        });
+        if (status !== 200) {
+            throw new Error(`Received unexpected API status code ${status}`);
+            withinMonth = false; 
+        }
+        if (pulls.length === 0) {
+            console.log("no more pull requests.. length was 0")
+            withinMonth = false; 
+        }
+        for ( var pull of pulls) {
+            var user = pull.user.login;
+            console.log("got pull: ", pull)
+            
+            // TODO: add user to set
+            
+            // TODO: calculate next withinMonth 
+            withinMonth = false;
+            //  // figure out if the most recent PR is within the month 
+            //  var creationDate = Date.parse("2020-04-10T20:09:31Z"); // TODO: data["created_at"]: 
+            //  var currDate = Date.now(); 
+            //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+            //  var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
+            //  console.log("within month:", withinMonth)
+        }
+
+        if (withinMonth) {
+            return yield isFirstPull(client, repo, allUsers, page + 1);
+        } else {
+            return allUsers; 
+        }
+        
+    });
+}
+
 
 run(); 
