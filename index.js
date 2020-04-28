@@ -76,7 +76,7 @@ function run() {
      
      // get all new users of the past month 
     var newUsers = [];
-    var allUsers = yield isFirstPull(client, repoName, newUsers);
+    var allUsers = yield getAllUsers(client, repoName, newUsers);
     
    
 
