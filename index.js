@@ -6,7 +6,7 @@ var defaultMoodbarMessage = "Hi newcomers! We wanted to check in on everyone - i
 
 
 function run() {
-    const client = new github_old.GitHub(core.getInput('repo-token', { required: true }));
+    var client = new github_old.GitHub(core.getInput('repo-token', { required: true }));
     let moodbarMessage = core.getInput('moodbar-message');
     console.log(moodbarMessage);
     const mentors  = core.getInput('mentor-list');
@@ -73,7 +73,7 @@ function run() {
     var withinMonth = true; 
 
     while (withinMonth) {
-        var { status, data: pulls } = yield client.pulls.list({
+        var { status, data: pulls } = client.pulls.list({   //removed yield
             owner: "pavitthrap",
             repo: repoName,
             per_page: 100,
