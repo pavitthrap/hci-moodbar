@@ -14,6 +14,53 @@ var Github = require('github-api');
 var defaultMoodbarMessage = "Hi newcomers! We wanted to check in on everyone - in this thread, feel free to add any of your comments, suggestions, or questions. This community looks forward to looking at your feedback.";
 
 
+
+function getAllUsers(client, repo, allUsers, page = 1) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Provide console output if we loop for a while.
+        console.log('Checking...');
+        var { status, data: pulls } = yield client.pulls.list({
+            owner: "pavitthrap",
+            repo: repoName,
+            per_page: 100,
+            page: page,
+            state: 'all'
+        });
+        if (status !== 200) {
+            throw new Error(`Received unexpected API status code ${status}`);
+            withinMonth = false; 
+        }
+        if (pulls.length === 0) {
+            console.log("no more pull requests.. length was 0")
+            withinMonth = false; 
+        }
+        for ( var pull of pulls) {
+            var user = pull.user.login;
+            console.log("got pull: ", pull)
+            
+            // TODO: add user to set
+            
+            // TODO: calculate next withinMonth 
+            withinMonth = false;
+            //  // figure out if the most recent PR is within the month 
+            //  var creationDate = Date.parse("2020-04-10T20:09:31Z"); // TODO: data["created_at"]: 
+            //  var currDate = Date.now(); 
+            //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+            //  var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
+            //  console.log("within month:", withinMonth)
+        }
+
+        if (withinMonth) {
+            return yield isFirstPull(client, repo, allUsers, page + 1);
+        } else {
+            return allUsers; 
+        }
+        
+    });
+}
+
+
+
 function run() {
     var client = new github_old.GitHub(core.getInput('repo-token', { required: true }));
     let moodbarMessage = core.getInput('moodbar-message');
@@ -93,50 +140,6 @@ function run() {
     //     });
 
 
-}
-
-function getAllUsers(client, repo, allUsers, page = 1) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // Provide console output if we loop for a while.
-        console.log('Checking...');
-        var { status, data: pulls } = yield client.pulls.list({
-            owner: "pavitthrap",
-            repo: repoName,
-            per_page: 100,
-            page: page,
-            state: 'all'
-        });
-        if (status !== 200) {
-            throw new Error(`Received unexpected API status code ${status}`);
-            withinMonth = false; 
-        }
-        if (pulls.length === 0) {
-            console.log("no more pull requests.. length was 0")
-            withinMonth = false; 
-        }
-        for ( var pull of pulls) {
-            var user = pull.user.login;
-            console.log("got pull: ", pull)
-            
-            // TODO: add user to set
-            
-            // TODO: calculate next withinMonth 
-            withinMonth = false;
-            //  // figure out if the most recent PR is within the month 
-            //  var creationDate = Date.parse("2020-04-10T20:09:31Z"); // TODO: data["created_at"]: 
-            //  var currDate = Date.now(); 
-            //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-            //  var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
-            //  console.log("within month:", withinMonth)
-        }
-
-        if (withinMonth) {
-            return yield isFirstPull(client, repo, allUsers, page + 1);
-        } else {
-            return allUsers; 
-        }
-        
-    });
 }
 
 
