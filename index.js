@@ -121,13 +121,6 @@ function run() {
             let moodbarMessage = core.getInput('moodbar-message');
             const mentors  = core.getInput('mentor-list');
             const repoName = core.getInput('repo-name');
-            const option = core.getInput('option');
-            console.log("option value is:", option); 
-            if (option) {
-                console.log("hello option here!!")
-            }
-            const { data } = yield client.request("/user");
-            console.log("data", data); 
 
             // OPTIONALLY: strip whitespace? 
             var mentorArr = mentors.split(',');
@@ -148,7 +141,9 @@ function run() {
 
             // get all new users of the past month 
             var newUsers = new Map();
-            owner = "pavitthrap";
+            owner = "wwp";
+            // TODO: experiment with owner --> try using Jade's username?
+            
             yield getAllUsers(client, owner, repoName, newUsers);
             yield isFirstPull(client, owner, repoName, newUsers); 
 
