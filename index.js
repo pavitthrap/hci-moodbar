@@ -44,7 +44,7 @@ function getAllUsers(client, repo, allUsers, page = 1) {
             
             try {
                 // TODO: calculate next withinMonth 
-                // QUESTION: how to determine last month?
+                // QUESTION: how to determine last month? -- 31 day distance, don't go more than 2 months behind 
                 
                 //  // figure out if the most recent PR is within the month 
                 var creationDate = new Date(creationTime); // TODO: data["created_at"]: 
@@ -74,6 +74,40 @@ function getAllUsers(client, repo, allUsers, page = 1) {
     });
 }
 
+
+// No way to filter pulls by creator
+function isFirstPull(client, owner, repo, allUsers, page = 1) {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Provide console output if we loop for a while.
+        console.log('Checking...  Page: ', page);
+        const { status, data: pulls } = yield client.pulls.list({
+            owner: owner,
+            repo: repo,
+            per_page: 100,
+            page: page,
+            state: 'all'
+        });
+        if (status !== 200) {
+            throw new Error(`Received unexpected API status code ${status}`);
+        }
+        if (pulls.length === 0) {
+            return allUsers;
+        }
+        for (const pull of pulls) {
+            console.log("Checking this pull: ", pull.number, pull.user.login)
+            const currUser = pull.user.login;
+            if (currUser in allUsers && pull.number < allUsers.get(currUser)) {
+                // delete currUser from the dict ; return if the dict is empty 
+                console.log("an older pull request was found for user: ", currUser);
+                allUsers.delete(currUser);
+                if (allUsers.size == 0) {
+                    return allUsers;
+                }
+            }
+        }
+        return yield isFirstPull(client, owner, repo, allUsers, page + 1);
+    });
+}
 
 
 function run() {
@@ -141,8 +175,11 @@ function run() {
             // get all new users of the past month 
             var newUsers = new Map();
             var allUsers = yield getAllUsers(client, repoName, newUsers);
-            console.log("all users:", allUsers);
+            console.log("all users:", allUsers, allUsers.size);
 
+
+            var newUsers = isFirstPull(client, "pavitthrap", repoName, allUsers); 
+            console.log("new users:", newUsers);
             // get individual PRs, and keep going until created date exceeds 1 month 
             // created_at, creator.login
             // https://developer.github.com/v3/pulls/#get-a-single-pull-request
