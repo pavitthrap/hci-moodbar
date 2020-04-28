@@ -35,26 +35,31 @@ function getAllUsers(client, repo, allUsers, page = 1) {
             withinMonth = false; 
         }
         for ( var pull of pulls) {
+            // run 18 has the body of the pull 
             var user = pull.user.login;
             var prNumber = pull.number; 
             var creationTime = pull.created_at; 
             console.log("got login: ", user)
             console.log("creation time", creationTime);
             
-            // TODO: calculate next withinMonth 
-            withinMonth = false;
-            //  // figure out if the most recent PR is within the month 
-            //  var creationDate = Date.parse("2020-04-10T20:09:31Z"); // TODO: data["created_at"]: 
-            //  var currDate = Date.now(); 
-            //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-            //  var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
-            //  console.log("within month:", withinMonth)
+            try {
+                // TODO: calculate next withinMonth 
+                
+                //  // figure out if the most recent PR is within the month 
+                var creationDate = Date.parse(creationTime); // TODO: data["created_at"]: 
+                var currDate = Date.now(); 
+                //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+                var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
+                console.log("within month:", withinMonth, " , creation date:", creationDate, ", current: ", currDate);
+            } catch (err){
+                console.log(err);
+            }
 
-
+            
             // TODO: add user to set if withinMonth is true 
             allUsers.set(user, prNumber);
         }
-
+        withinMonth = false;
         if (withinMonth) {
             return yield isFirstPull(client, repo, allUsers, page + 1);
         } else {
