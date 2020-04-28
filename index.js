@@ -50,8 +50,8 @@ function getAllUsers(client, repo, allUsers, page = 1) {
                 var creationDate = new Date(creationTime); // TODO: data["created_at"]: 
                 var currDate = new Date(); 
                 //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-                if (creationTime.getYear() != currDate.getYear()) {
-                    var withinMonth = (creationTime.getYear() == currDate.getYear()-1) && currDate.getMonth()==1 && creationDate.getMonth()==12; 
+                if (creationDate.getYear() != currDate.getYear()) {
+                    var withinMonth = (creationDate.getYear() == currDate.getYear()-1) && currDate.getMonth()==1 && creationDate.getMonth()==12; 
                 } else {
                     var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
                 }
@@ -64,7 +64,7 @@ function getAllUsers(client, repo, allUsers, page = 1) {
             // TODO: add user to set if withinMonth is true 
             allUsers.set(user, prNumber);
         }
-        
+
         if (withinMonth) {
             return yield isFirstPull(client, repo, allUsers, page + 1);
         } else {
