@@ -94,9 +94,11 @@ function isFirstPull(client, owner, repo, allUsers, page = 1) {
             return allUsers;
         }
         for (const pull of pulls) {
-            console.log("Checking this pull: ", pull.number, pull.user.login)
             const currUser = pull.user.login;
-            if (currUser in allUsers && pull.number < allUsers.get(currUser)) {
+            console.log("Checking this pull: ", pull.number, pull.user.login, allUsers.has(currUser))
+            console.log("User info: ", allUsers.get(currUser))
+            
+            if (allUsers.has(currUser) && pull.number < allUsers.get(currUser)) {
                 // delete currUser from the dict ; return if the dict is empty 
                 console.log("an older pull request was found for user: ", currUser);
                 allUsers.delete(currUser);
@@ -162,13 +164,14 @@ function run() {
             
             // get all new users of the past month 
             var newUsers = new Map();
-            var allUsers = yield getAllUsers(client, repoName, newUsers);
-            console.log("all users:", allUsers, allUsers.size, "  , newUsers is now: ", newUsers);
+            yield getAllUsers(client, repoName, newUsers);
+            console.log( "newUsers is now: ", newUsers);
 
-            allUsers.set('pavitthrap', 2);
+            newUsers.set('pavitthrap', 2);
+            console.log( "newUsers after mod is now: ", newUsers);
 
-            var newUsers = yield isFirstPull(client, "pavitthrap", repoName, allUsers); 
-            console.log("new users:", newUsers);
+            yield isFirstPull(client, "pavitthrap", repoName, newUsers); 
+            console.log("new users end:", newUsers);
         } catch(err) {
             console.log(err);
         }
