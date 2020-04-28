@@ -7,6 +7,9 @@ inputs:
     moodbar-message:
       description: 'Text for the monthly message to the community. If not provided, the default message will be used.'
       required: false 
+    mentors:
+        description: 'Comma-separated list of mentors that could potentially follow-up that will be mentioned on the post. Optional.'
+        required: false 
 runs:
   using: 'node12'
   main: 'index.js'
