@@ -55,7 +55,7 @@ function getAllUsers(client, repo, allUsers, page = 1) {
                 } else {
                     var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
                 }
-                console.log("within month:", withinMonth, " , creation date:", creationDate, ", current month: ", currcurrDate.getMonth());
+                console.log("within month:", withinMonth, " , creation date:", creationDate, ", current month: ", currDate.getMonth());
             } catch (err){
                 console.log(err);
             }
