@@ -44,10 +44,11 @@ function getAllUsers(client, repo, allUsers, page = 1) {
             
             try {
                 // TODO: calculate next withinMonth 
+                // QUESTION: how to determine last month?
                 
                 //  // figure out if the most recent PR is within the month 
-                var creationDate = Date.parse(creationTime); // TODO: data["created_at"]: 
-                var currDate = Date.now(); 
+                var creationDate = new Date(creationTime); // TODO: data["created_at"]: 
+                var currDate = new Date(); 
                 //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
                 var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
                 console.log("within month:", withinMonth, " , creation date:", creationDate, ", current: ", currDate);
