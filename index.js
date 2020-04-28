@@ -36,9 +36,11 @@ function getAllUsers(client, repo, allUsers, page = 1) {
         }
         for ( var pull of pulls) {
             var user = pull.user.login;
+            var prNumber = pull.number; 
+            var creationTime = pull.created_at; 
             console.log("got login: ", user)
-            // TODO: add user to set
-            allUsers.add(user);
+            console.log("creation time", creationTime);
+            
             // TODO: calculate next withinMonth 
             withinMonth = false;
             //  // figure out if the most recent PR is within the month 
@@ -47,6 +49,10 @@ function getAllUsers(client, repo, allUsers, page = 1) {
             //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
             //  var withinMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
             //  console.log("within month:", withinMonth)
+
+
+            // TODO: add user to set if withinMonth is true 
+            allUsers.set(user, prNumber);
         }
 
         if (withinMonth) {
@@ -123,7 +129,7 @@ function run() {
         
             
             // get all new users of the past month 
-            var newUsers = new Set();
+            var newUsers = new Map();
             var allUsers = yield getAllUsers(client, repoName, newUsers);
             console.log("all users:", allUsers);
 
