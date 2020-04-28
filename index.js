@@ -31,12 +31,13 @@ function run() {
         defaultMoodbarMessage = defaultMoodbarMessage + " Here are the mentors that will be able to answer any questions: " + mentorString; 
     }
 
-    const context = github_old.context;    
-    const newIssue = client.issues.create({
-        ...context.repo,
-        title: 'Moodbar for Current Month',
-        body: defaultMoodbarMessage
-    });
+    // TODO: make the issue message for real 
+    // const context = github_old.context;    
+    // const newIssue = client.issues.create({
+    //     ...context.repo,
+    //     title: 'Moodbar for Current Month',
+    //     body: defaultMoodbarMessage
+    // });
 
 
     // using github api 
@@ -69,9 +70,10 @@ function run() {
     var nonNewUsers = []; 
 
     var page = 1; 
-    
+    var withinMonth = true; 
+
     while (withinMonth) {
-        const { status, data: pulls } = yield client.pulls.list({
+        var { status, data: pulls } = yield client.pulls.list({
             owner: "pavitthrap",
             repo: repoName,
             per_page: 100,
@@ -84,8 +86,8 @@ function run() {
         if (pulls.length === 0) {
             withinMonth = false; 
         }
-        for (const pull of pulls) {
-            const user = pull.user.login;
+        for ( var pull of pulls) {
+            var user = pull.user.login;
             console.log("got pull: ", pull)
             
             // TODO: add user to list
