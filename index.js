@@ -67,7 +67,7 @@ function getAllUsers(client, owner, repo, allUsers, page = 1) {
                 } else { // year is the same, month is diff 
                     var prevMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
                 }
-                var dateMinimum = max(month_map[creationTime.getMonth()] - (31 - currDate.getDay())+1, 1);
+                var dateMinimum = Math.max(month_map[creationTime.getMonth()] - (31 - currDate.getDay())+1, 1);
                 if (!withinMonth) {
                     withinMonth = prevMonth && creationDate.getDay() >= dateMinimum;
                 }
