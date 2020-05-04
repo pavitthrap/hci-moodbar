@@ -57,22 +57,25 @@ function getAllUsers(client, owner, repo, allUsers, page = 1) {
                 }
 
                 var withinMonth = false; 
+                var prevMonth = false; 
                 //  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-                if (false && currDate.getMonth() == creationDate.getMonth() && creationDate.getYear() == currDate.getYear()) {
+                if (currDate.getMonth() == creationDate.getMonth() && creationDate.getYear() == currDate.getYear()) {
                     withinMonth = true;
                 }
                 else if (creationDate.getYear() != currDate.getYear()) {
-                    var prevMonth = (creationDate.getYear() == currDate.getYear()-1) && currDate.getMonth()==0 && creationDate.getMonth()==11; 
+                    prevMonth = (creationDate.getYear() == currDate.getYear()-1) && currDate.getMonth()==0 && creationDate.getMonth()==11; 
                     
                 } else { // year is the same, month is diff 
-                    var prevMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
+                    prevMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
                 }
-                var dateMinimum = Math.max(month_map[creationDate.getMonth()] - (31 - currDate.getDay())+1, 1);
+                var dateMinimum = Math.max(month_map[creationDate.getMonth()] - (31 - currDate.getDay()) +1, 1);
                 if (!withinMonth) {
                     withinMonth = prevMonth && creationDate.getDay() >= dateMinimum;
                 }
-
+                
                 console.log("within month:", withinMonth, " , creation date:", creationDate, ", curr date: ", currDate, ", prev month: ", prevMonth, " , date min:", dateMinimum);
+                console.log("creation month: ", creationDate.getMonth(), ", month map value:", month_map[creationDate.getMonth()], ", curr date:", currDate.getDay(), "whole exp: ", month_map[creationDate.getMonth()] - (31 - currDate.getDay()) +1)
+
             } catch (err){
                 console.log(err);
             }
