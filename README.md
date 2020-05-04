@@ -32,9 +32,9 @@ jobs:
 
 # Example Issue Message 
 
-__Hi newcomers! We wanted to check in on everyone - in this thread, feel free to add any of your comments, suggestions, or questions. This community looks forward to looking at your feedback.__
-Here are the mentors that will be able to answer any questions: @lorem_ipsum_1, @lorem_ipsum_2
-These are all the new users in the past month: @lorem_ipsum_3, @lorem_ipsum_4
+__Hi newcomers! We wanted to check in on everyone - in this thread, feel free to add any of your comments, suggestions, or questions. This community looks forward to looking at your feedback.__  
+Here are the mentors that will be able to answer any questions: @lorem_ipsum_1, @lorem_ipsum_2  
+These are all the new users in the past month: @lorem_ipsum_3, @lorem_ipsum_4  
 Here is a link to a feedback form: lorem_ipsum.net
 
 # Implementation Notes 
