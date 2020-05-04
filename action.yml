@@ -16,6 +16,9 @@ inputs:
     mentors:
         description: 'Comma-separated list of mentors that could potentially follow-up that will be mentioned on the post. Optional.'
         required: false 
+    feedback-form:
+        description: 'A link to a feedback form. Optional.'
+        required: false 
 runs:
   using: 'node12'
   main: 'index.js'
