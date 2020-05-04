@@ -12,12 +12,11 @@ const github = require("@actions/github");
 
 var defaultMoodbarMessage = "Hi newcomers! We wanted to check in on everyone - in this thread, feel free to add any of your comments, suggestions, or questions. This community looks forward to looking at your feedback.";
 var newUserMessage = "\nThese are all the new users in the past month: "; 
+var mentorMessage = " \nHere are the mentors that will be able to answer any questions: ";
 var feedbackFormMessage = "\nHere is a link to a feedback form: "; 
 
 var month_map = {0: 31, 1: 28, 2: 31, 3: 30, 4: 31, 5: 30, 6: 31, 7: 31, 8: 30, 9: 31, 10: 30, 11:31};
 
-//TODO: add survey field 
-// TODO - use non default message 
 // idea-> when withinMonth is false, simply call isFirstPull directly, passing the appropriate page number in as well 
 function getAllUsers(client, owner, repo, allUsers, page = 1) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -161,7 +160,7 @@ function run() {
                     mentorString += "@";
                     mentorString += mentorArr[i];
                 }
-                moodbarMessage = moodbarMessage + " Here are the mentors that will be able to answer any questions: " + mentorString; 
+                moodbarMessage = moodbarMessage + mentorMessage + mentorString; 
             }
 
 
