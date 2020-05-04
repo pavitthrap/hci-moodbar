@@ -139,10 +139,11 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             var client = new github.GitHub(core.getInput('repo-token', { required: true }));
-            let moodbarMessage = core.getInput('moodbar-message');
+            var moodbarMessage = core.getInput('moodbar-message');
             if (!moodbarMessage) {
                 moodbarMessage = defaultMoodbarMessage; 
             }
+            console.log("moodbar message is: ", moodbarMessage);
             const mentors  = core.getInput('mentor-list');
             const repoName = core.getInput('repo-name');
             const repoOwner = core.getInput('repo-owner');
@@ -194,7 +195,7 @@ function run() {
             }
 
             if (feedbackForm) {
-                moodbarMessage = feedbackFormMessage + feedbackFormMessage; 
+                moodbarMessage = moodbarMessage + feedbackFormMessage + feedbackForm; 
             }
 
             const context = github.context;    
