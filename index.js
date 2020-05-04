@@ -74,7 +74,7 @@ function getAllUsers(client, owner, repo, allUsers, page = 1) {
                 }
                 
                 console.log("within month:", withinMonth, " , creation date:", creationDate, ", curr date: ", currDate, ", prev month: ", prevMonth, " , date min:", dateMinimum);
-                console.log("creation month: ", creationDate.getMonth(), ", month map value:", month_map[creationDate.getMonth()], ", curr day:", currDate.getDate(), "whole exp: ", month_map[creationDate.getMonth()] - (31 - currDate.getDay()) +1)
+                console.log("creation month: ", creationDate.getMonth(), ", month map value:", month_map[creationDate.getMonth()], ", curr day:", currDate.getDate());
 
             } catch (err){
                 console.log(err);
@@ -140,6 +140,9 @@ function run() {
         try {
             var client = new github.GitHub(core.getInput('repo-token', { required: true }));
             let moodbarMessage = core.getInput('moodbar-message');
+            if (!moodbarMessage) {
+                moodbarMessage = defaultMoodbarMessage; 
+            }
             const mentors  = core.getInput('mentor-list');
             const repoName = core.getInput('repo-name');
             const repoOwner = core.getInput('repo-owner');
@@ -157,7 +160,7 @@ function run() {
                     mentorString += "@";
                     mentorString += mentorArr[i];
                 }
-                defaultMoodbarMessage = defaultMoodbarMessage + " Here are the mentors that will be able to answer any questions: " + mentorString; 
+                moodbarMessage = moodbarMessage + " Here are the mentors that will be able to answer any questions: " + mentorString; 
             }
 
 
@@ -187,18 +190,18 @@ function run() {
             }
 
             if (newUserString) {
-                defaultMoodbarMessage = defaultMoodbarMessage + newUserMessage + newUserString; 
+                moodbarMessage = moodbarMessage + newUserMessage + newUserString; 
             }
 
             if (feedbackForm) {
-                defaultMoodbarMessage = feedbackFormMessage + feedbackFormMessage; 
+                moodbarMessage = feedbackFormMessage + feedbackFormMessage; 
             }
 
             const context = github.context;    
             const newIssue = client.issues.create({
                 ...context.repo,
                 title: 'Moodbar for Current Month',
-                body: defaultMoodbarMessage
+                body: moodbarMessage
             });
 
         
