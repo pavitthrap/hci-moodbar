@@ -68,13 +68,13 @@ function getAllUsers(client, owner, repo, allUsers, page = 1) {
                 } else { // year is the same, month is diff 
                     prevMonth = (currDate.getMonth() - creationDate.getMonth()) <= 1; // check if created_at is less than 1 month from current moment 
                 }
-                var dateMinimum = Math.max(month_map[creationDate.getMonth()] - (31 - currDate.getDay()) +1, 1);
+                var dateMinimum = Math.max(month_map[creationDate.getMonth()] - (31 - currDate.getDate()) +1, 1);
                 if (!withinMonth) {
-                    withinMonth = prevMonth && creationDate.getDay() >= dateMinimum;
+                    withinMonth = prevMonth && creationDate.getDate() >= dateMinimum;
                 }
                 
                 console.log("within month:", withinMonth, " , creation date:", creationDate, ", curr date: ", currDate, ", prev month: ", prevMonth, " , date min:", dateMinimum);
-                console.log("creation month: ", creationDate.getMonth(), ", month map value:", month_map[creationDate.getMonth()], ", curr date:", currDate.getDay(), "whole exp: ", month_map[creationDate.getMonth()] - (31 - currDate.getDay()) +1)
+                console.log("creation month: ", creationDate.getMonth(), ", month map value:", month_map[creationDate.getMonth()], ", curr day:", currDate.getDate(), "whole exp: ", month_map[creationDate.getMonth()] - (31 - currDate.getDay()) +1)
 
             } catch (err){
                 console.log(err);
