@@ -1,5 +1,5 @@
-name: 'Responsiveness Score'
-description: 'Measure the responsiveness of PR/issues in the last x months, where x is 1 unless otherwise specified.'
+name: 'Moodbar'
+description: 'Get feedback from new users via an issue.'
 inputs:
     repo-token:
       description: 'Token for the repository. Can be passed in using {{ secrets.GITHUB_TOKEN }}.'
