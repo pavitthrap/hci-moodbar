@@ -37,11 +37,12 @@ These are all the new users in the past month: @lorem_ipsum_3, @lorem_ipsum_4
 # Customizable Issue Message
 ## Instead of the default issue message, it is possible to customize the message with any or all of these input fields: moodbar-message, mentor-list, feedback-form.
 __Custom message to repo users__  
-Here are the mentors that will be able to answer any questions: @demo_mentor_one, @demo_mentor_two  
+Here are the mentors that will be able to answer any questions: __@demo_mentor_one, @demo_mentor_two__  
 Here is a link to a feedback form: __some_url.com__  
   
+## These are the corresponding input values to produce the output above.
 moodbar-message = __"Custom message to repo users"__  
-mentor-list = __"demo_mentor_one,demo_mentor_two"__
+mentor-list = __"demo_mentor_one,demo_mentor_two"__  
 feedback-form = __"some_url.com"__
 
 # Implementation Notes 
